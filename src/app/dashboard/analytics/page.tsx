@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { containerVariants, itemVariants } from '@/lib/animation-variants';
-import { StatsCard } from '@/components/dashboard/StatsCard';
-import { Eye, BookOpen, Clock, TrendingUp } from 'lucide-react';
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
+import { StatsCard } from "@/components/dashboard/StatsCard";
+import { Eye, BookOpen, Clock, TrendingUp } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -14,15 +14,15 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 
 const chartData = [
-  { month: 'Jan', views: 400, reads: 240 },
-  { month: 'Feb', views: 600, reads: 350 },
-  { month: 'Mar', views: 800, reads: 500 },
-  { month: 'Apr', views: 1200, reads: 800 },
-  { month: 'May', views: 1600, reads: 1100 },
-  { month: 'Jun', views: 2100, reads: 1400 },
+  { month: "Jan", views: 400, reads: 240 },
+  { month: "Feb", views: 600, reads: 350 },
+  { month: "Mar", views: 800, reads: 500 },
+  { month: "Apr", views: 1200, reads: 800 },
+  { month: "May", views: 1600, reads: 1100 },
+  { month: "Jun", views: 2100, reads: 1400 },
 ];
 
 export default function AnalyticsPage() {
@@ -33,7 +33,6 @@ export default function AnalyticsPage() {
       animate="animate"
       className="space-y-8"
     >
-      {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className="text-3xl font-bold">Analytics</h1>
         <p className="text-gray-600 dark:text-gray-400">
