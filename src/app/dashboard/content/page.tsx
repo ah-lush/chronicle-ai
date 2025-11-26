@@ -62,15 +62,15 @@ export default function ContentPage() {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="icon-sm">
                       <Eye className="w-4 h-4" />
                     </Button>
                     {article.status !== 'published' && (
-                      <Button variant="ghost" size="sm" className="text-green-600">
+                      <Button variant="success" size="icon-sm">
                         <Check className="w-4 h-4" />
                       </Button>
                     )}
-                    <Button variant="ghost" size="sm" className="text-red-600">
+                    <Button variant="destructive" size="icon-sm">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>

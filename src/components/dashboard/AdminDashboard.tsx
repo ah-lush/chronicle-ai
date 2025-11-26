@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { StatsCard } from '@/components/dashboard/StatsCard';
-import { motion } from 'framer-motion';
-import { containerVariants, itemVariants } from '@/lib/animation-variants';
-import { trpc } from '@/lib/trpc/client';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { StatsCard } from "@/components/dashboard/StatsCard";
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
+import { trpc } from "@/lib/trpc/client";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
-export default function AdminPage() {
+const AdminDashboard = () => {
   const { data: stats, isLoading } = trpc.admin.getStats.useQuery();
 
   if (isLoading) {
@@ -24,7 +24,6 @@ export default function AdminPage() {
       animate="animate"
       className="space-y-8"
     >
-      {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         <p className="text-gray-600 dark:text-gray-400">
@@ -32,7 +31,6 @@ export default function AdminPage() {
         </p>
       </motion.div>
 
-      {/* Stats Grid */}
       <motion.div
         variants={containerVariants}
         initial="initial"
@@ -69,8 +67,10 @@ export default function AdminPage() {
         </motion.div>
       </motion.div>
 
-      {/* Content Breakdown */}
-      <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <motion.div
+        variants={itemVariants}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
           <h3 className="font-bold mb-4">Content Types</h3>
           <div className="space-y-3">
@@ -102,4 +102,6 @@ export default function AdminPage() {
       </motion.div>
     </motion.div>
   );
-}
+};
+
+export default AdminDashboard;

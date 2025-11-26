@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { StatsCard } from '@/components/dashboard/StatsCard';
-import { FileText, Eye, Zap, Bookmark } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { containerVariants, itemVariants } from '@/lib/animation-variants';
+import { StatsCard } from "@/components/dashboard/StatsCard";
+import { FileText } from "lucide-react";
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
 
-export default function DashboardPage() {
+export function UserDashboard() {
   return (
     <motion.div
       variants={containerVariants}
@@ -13,7 +13,6 @@ export default function DashboardPage() {
       animate="animate"
       className="space-y-8"
     >
-      {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className="text-3xl font-bold">Welcome back</h1>
         <p className="text-gray-600 dark:text-gray-400">
@@ -21,7 +20,6 @@ export default function DashboardPage() {
         </p>
       </motion.div>
 
-      {/* Stats Grid */}
       <motion.div
         variants={containerVariants}
         initial="initial"
@@ -62,15 +60,22 @@ export default function DashboardPage() {
         </motion.div>
       </motion.div>
 
-      {/* Recent Activity */}
-      <motion.div variants={itemVariants} className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
+      <motion.div
+        variants={itemVariants}
+        className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6"
+      >
         <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
         <div className="space-y-4">
           {[1, 2, 3].map((item) => (
-            <div key={item} className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 last:border-b-0">
+            <div
+              key={item}
+              className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 last:border-b-0"
+            >
               <div>
                 <p className="font-medium">Published new article</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">2 hours ago</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  2 hours ago
+                </p>
               </div>
               <FileText className="w-5 h-5 text-gray-400" />
             </div>

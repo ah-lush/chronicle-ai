@@ -46,9 +46,7 @@ export default function ArticlesPage() {
           <p className="text-gray-600 dark:text-gray-400">Manage and view all your articles</p>
         </div>
         <Link href="/dashboard/create">
-          <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
-            New Article
-          </Button>
+          <Button>New Article</Button>
         </Link>
       </motion.div>
 
@@ -87,10 +85,10 @@ export default function ArticlesPage() {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="icon-sm">
                         <Edit className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-red-600">
+                      <Button variant="destructive" size="icon-sm">
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>

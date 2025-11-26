@@ -69,9 +69,7 @@ export default function AIConfigPage() {
                 </SelectContent>
               </Select>
             </div>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
-              Save Provider Settings
-            </Button>
+            <Button>Save Provider Settings</Button>
           </div>
         </div>
       </motion.section>

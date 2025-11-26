@@ -116,7 +116,7 @@ export default function AIGeneratePage() {
 
         {/* Button */}
         <div className="pt-6 border-t border-gray-200 dark:border-gray-800">
-          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 w-full">
+          <Button className="w-full">
             <Zap className="w-4 h-4 mr-2" />
             Generate Article
           </Button>

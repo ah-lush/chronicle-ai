@@ -64,14 +64,14 @@ export default function UsersPage() {
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end gap-2">
                     {user.role !== 'admin' && (
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="icon-sm">
                         <Shield className="w-4 h-4" />
                       </Button>
                     )}
-                    <Button variant="ghost" size="sm" className="text-yellow-600">
+                    <Button variant="warning" size="icon-sm">
                       <Ban className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-red-600">
+                    <Button variant="destructive" size="icon-sm">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>

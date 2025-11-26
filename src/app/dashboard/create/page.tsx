@@ -97,9 +97,7 @@ export default function CreatePage() {
 
         {/* Buttons */}
         <div className="flex gap-4 pt-6 border-t border-gray-200 dark:border-gray-800">
-          <Button type="submit" className="bg-gradient-to-r from-blue-600 to-purple-600">
-            Publish Article
-          </Button>
+          <Button type="submit">Publish Article</Button>
           <Button type="button" variant="outline">
             Save as Draft
           </Button>
