@@ -27,9 +27,9 @@ export default function DashLayout({
   return (
     <SidebarProvider>
       <AppSidebar userRole={role} />
-      <SidebarInset>
+      <SidebarInset className="flex flex-col h-screen overflow-hidden">
         <DashboardHeader user={user} />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { StatsCard } from "@/components/dashboard/StatsCard";
-import { FileText } from "lucide-react";
+import { FileText, Eye, Zap, Bookmark } from "lucide-react";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 
@@ -30,7 +30,8 @@ export function UserDashboard() {
           <StatsCard
             label="Articles Published"
             value="12"
-            icon="📄"
+            icon={FileText}
+            iconColor="text-blue-600"
             trend={{ value: 25, isPositive: true }}
           />
         </motion.div>
@@ -38,7 +39,8 @@ export function UserDashboard() {
           <StatsCard
             label="Total Views"
             value="4.2K"
-            icon="👁️"
+            icon={Eye}
+            iconColor="text-purple-600"
             trend={{ value: 12, isPositive: true }}
           />
         </motion.div>
@@ -46,7 +48,8 @@ export function UserDashboard() {
           <StatsCard
             label="AI Generated"
             value="5"
-            icon="⚡"
+            icon={Zap}
+            iconColor="text-yellow-600"
             trend={{ value: 40, isPositive: true }}
           />
         </motion.div>
@@ -54,7 +57,8 @@ export function UserDashboard() {
           <StatsCard
             label="Bookmarked"
             value="23"
-            icon="🔖"
+            icon={Bookmark}
+            iconColor="text-green-600"
             trend={{ value: 8, isPositive: true }}
           />
         </motion.div>

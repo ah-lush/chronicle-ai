@@ -47,7 +47,6 @@ const adminNavItems = [
   { href: "/dashboard/content", label: "Content", icon: FileStack },
   { href: "/dashboard/users", label: "Users", icon: Users },
   { href: "/dashboard/ai-config", label: "AI Config", icon: Zap },
-  { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/dashboard/monitoring", label: "Monitoring", icon: Monitor },
 ];
 

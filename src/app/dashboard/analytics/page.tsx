@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { containerVariants, itemVariants } from '@/lib/animation-variants';
 import { StatsCard } from '@/components/dashboard/StatsCard';
+import { Eye, BookOpen, Clock, TrendingUp } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -48,16 +49,36 @@ export default function AnalyticsPage() {
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
       >
         <motion.div variants={itemVariants}>
-          <StatsCard label="Total Views" value="8.5K" icon="👁️" />
+          <StatsCard
+            label="Total Views"
+            value="8.5K"
+            icon={Eye}
+            iconColor="text-blue-600"
+          />
         </motion.div>
         <motion.div variants={itemVariants}>
-          <StatsCard label="Total Reads" value="5.2K" icon="📖" />
+          <StatsCard
+            label="Total Reads"
+            value="5.2K"
+            icon={BookOpen}
+            iconColor="text-green-600"
+          />
         </motion.div>
         <motion.div variants={itemVariants}>
-          <StatsCard label="Avg Read Time" value="4.5 min" icon="⏱️" />
+          <StatsCard
+            label="Avg Read Time"
+            value="4.5 min"
+            icon={Clock}
+            iconColor="text-orange-600"
+          />
         </motion.div>
         <motion.div variants={itemVariants}>
-          <StatsCard label="Engagement Rate" value="62%" icon="📈" />
+          <StatsCard
+            label="Engagement Rate"
+            value="62%"
+            icon={TrendingUp}
+            iconColor="text-purple-600"
+          />
         </motion.div>
       </motion.div>
 

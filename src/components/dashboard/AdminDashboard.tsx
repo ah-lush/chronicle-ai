@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import { trpc } from "@/lib/trpc/client";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { FileText, CheckCircle, Clock, Eye } from "lucide-react";
 
 const AdminDashboard = () => {
   const { data: stats, isLoading } = trpc.admin.getStats.useQuery();
@@ -41,28 +42,32 @@ const AdminDashboard = () => {
           <StatsCard
             label="Total Articles"
             value={stats?.totalArticles || 0}
-            icon="📄"
+            icon={FileText}
+            iconColor="text-blue-600"
           />
         </motion.div>
         <motion.div variants={itemVariants}>
           <StatsCard
             label="Published"
             value={stats?.publishedArticles || 0}
-            icon="✅"
+            icon={CheckCircle}
+            iconColor="text-green-600"
           />
         </motion.div>
         <motion.div variants={itemVariants}>
           <StatsCard
             label="Pending Review"
             value={stats?.pendingArticles || 0}
-            icon="⏳"
+            icon={Clock}
+            iconColor="text-orange-600"
           />
         </motion.div>
         <motion.div variants={itemVariants}>
           <StatsCard
             label="Total Views"
             value={(stats?.totalViews || 0).toLocaleString()}
-            icon="👁️"
+            icon={Eye}
+            iconColor="text-purple-600"
           />
         </motion.div>
       </motion.div>

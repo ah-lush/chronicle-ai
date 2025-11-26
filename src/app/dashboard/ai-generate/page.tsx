@@ -1,22 +1,30 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { containerVariants, itemVariants } from '@/lib/animation-variants';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { motion } from "framer-motion";
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Zap } from 'lucide-react';
-import { CATEGORIES } from '@/lib/constants';
+} from "@/components/ui/select";
+import { Zap } from "lucide-react";
+import { CATEGORIES } from "@/lib/constants";
+import { Combobox } from "@/components/ui/combobox";
+import { useState } from "react";
 
 export default function AIGeneratePage() {
+  const [category, setCategory] = useState("");
+  const categoryOptions = CATEGORIES.map((cat) => ({
+    value: cat.slug,
+    label: cat.name,
+  }));
+
   return (
     <motion.div
       variants={containerVariants}
@@ -24,7 +32,6 @@ export default function AIGeneratePage() {
       animate="animate"
       className="space-y-8"
     >
-      {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className="text-3xl font-bold">AI Article Generator</h1>
         <p className="text-gray-600 dark:text-gray-400">
@@ -32,9 +39,10 @@ export default function AIGeneratePage() {
         </p>
       </motion.div>
 
-      {/* Form */}
-      <motion.form variants={itemVariants} className="space-y-6 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
-        {/* Topic */}
+      <motion.form
+        variants={itemVariants}
+        className="space-y-6 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6"
+      >
         <div>
           <Label htmlFor="topic">Topic or Event</Label>
           <Input
@@ -45,28 +53,22 @@ export default function AIGeneratePage() {
           />
         </div>
 
-        {/* Category */}
         <div>
           <Label htmlFor="category">Category</Label>
-          <Select>
-            <SelectTrigger className="mt-2">
-              <SelectValue placeholder="Select a category" />
-            </SelectTrigger>
-            <SelectContent>
-              {CATEGORIES.map((cat) => (
-                <SelectItem key={cat.id} value={cat.slug}>
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Combobox
+            options={categoryOptions}
+            value={category}
+            onValueChange={setCategory}
+            placeholder="Select a category"
+            searchPlaceholder="Search categories..."
+            emptyMessage="No category found."
+            className="mt-2"
+          />
         </div>
-
-        {/* Tone */}
         <div>
           <Label htmlFor="tone">Tone</Label>
           <Select>
-            <SelectTrigger className="mt-2">
+            <SelectTrigger className="mt-2 w-full ">
               <SelectValue placeholder="Select tone" />
             </SelectTrigger>
             <SelectContent>
@@ -78,7 +80,6 @@ export default function AIGeneratePage() {
           </Select>
         </div>
 
-        {/* Keywords */}
         <div>
           <Label htmlFor="keywords">Keywords (comma-separated)</Label>
           <Input
@@ -88,11 +89,10 @@ export default function AIGeneratePage() {
           />
         </div>
 
-        {/* Length */}
         <div>
           <Label htmlFor="length">Article Length</Label>
           <Select>
-            <SelectTrigger className="mt-2">
+            <SelectTrigger className="mt-2 w-full ">
               <SelectValue placeholder="Select length" />
             </SelectTrigger>
             <SelectContent>
@@ -103,7 +103,6 @@ export default function AIGeneratePage() {
           </Select>
         </div>
 
-        {/* Additional Context */}
         <div>
           <Label htmlFor="context">Additional Context</Label>
           <Textarea
@@ -114,7 +113,6 @@ export default function AIGeneratePage() {
           />
         </div>
 
-        {/* Button */}
         <div className="pt-6 border-t border-gray-200 dark:border-gray-800">
           <Button className="w-full">
             <Zap className="w-4 h-4 mr-2" />
@@ -123,15 +121,14 @@ export default function AIGeneratePage() {
         </div>
       </motion.form>
 
-      {/* Info Box */}
       <motion.div
         variants={itemVariants}
         className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6"
       >
         <p className="text-sm text-blue-900 dark:text-blue-300">
           Our AI will search the internet, gather relevant sources, and write a
-          comprehensive article based on your input. Generated articles are always
-          marked as "AI-Generated" for transparency.
+          comprehensive article based on your input. Generated articles are
+          always marked as "AI-Generated" for transparency.
         </p>
       </motion.div>
     </motion.div>
