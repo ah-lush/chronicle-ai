@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import { httpBatchLink } from '@trpc/client';
 import { trpc } from '@/lib/trpc/client';
 import superjson from 'superjson';
+import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
+          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </QueryClientProvider>
     </trpc.Provider>

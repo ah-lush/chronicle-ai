@@ -3,19 +3,16 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Eye, EyeOff, Lock, Mail, User, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { ArrowRight, Eye, EyeOff, Lock, Loader2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { trpc } from "@/lib/trpc/client";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
-const signUpSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+const resetPasswordSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -23,102 +20,62 @@ const signUpSchema = z.object({
   path: ["confirmPassword"],
 });
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
+type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
-const SignUpForm = () => {
+const ResetPasswordForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<ResetPasswordFormData>({
+    resolver: zodResolver(resetPasswordSchema),
   });
 
-  const signUpMutation = trpc.auth.signUp.useMutation({
-    onSuccess: (_, variables) => {
-      toast.success("Verification code sent! Check your email.");
-      router.push(`/verify-otp?email=${encodeURIComponent(variables.email)}&type=signup`);
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+  const onSubmit = async (data: ResetPasswordFormData) => {
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
 
-  const onSubmit = (data: SignUpFormData) => {
-    signUpMutation.mutate({
-      email: data.email,
-      password: data.password,
-      fullName: data.fullName,
-    });
+      const { error } = await supabase.auth.updateUser({
+        password: data.password,
+      });
+
+      if (error) throw error;
+
+      toast.success("Password reset successfully!");
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to reset password");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="w-full max-w-xl lg:max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
       <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-xl p-8 sm:p-10 lg:p-12 space-y-6 sm:space-y-8">
-        <div className="space-y-2 text-center sm:text-left">
+        <div className="space-y-2 text-center">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            Create Account
+            Create New Password
           </h1>
           <p className="text-sm sm:text-base lg:text-lg text-foreground/60">
-            Join Chronicle AI to start your reading journey
+            Enter your new password below
           </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
           <div className="space-y-2">
             <Label
-              htmlFor="fullName"
-              className="text-sm font-medium text-foreground"
-            >
-              Full Name
-            </Label>
-            <div className="relative group">
-              <User className="w-4 h-4 sm:w-5 sm:h-5 absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 group-focus-within:text-cyan-400 transition-colors" />
-              <Input
-                id="fullName"
-                type="text"
-                placeholder="John Doe"
-                className="pl-10 sm:pl-11 h-11 sm:h-12 bg-secondary/30 border-border/50 text-foreground placeholder:text-foreground/40 focus:border-cyan-400/50 focus:ring-cyan-400/20 transition-all"
-                {...register("fullName")}
-              />
-            </div>
-            {errors.fullName && (
-              <p className="text-xs text-red-500">{errors.fullName.message}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label
-              htmlFor="email"
-              className="text-sm font-medium text-foreground"
-            >
-              Email Address
-            </Label>
-            <div className="relative group">
-              <Mail className="w-4 h-4 sm:w-5 sm:h-5 absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 group-focus-within:text-cyan-400 transition-colors" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                className="pl-10 sm:pl-11 h-11 sm:h-12 bg-secondary/30 border-border/50 text-foreground placeholder:text-foreground/40 focus:border-cyan-400/50 focus:ring-cyan-400/20 transition-all"
-                {...register("email")}
-              />
-            </div>
-            {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label
               htmlFor="password"
               className="text-sm font-medium text-foreground"
             >
-              Password
+              New Password
             </Label>
             <div className="relative group">
               <Lock className="w-4 h-4 sm:w-5 sm:h-5 absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 group-focus-within:text-cyan-400 transition-colors" />
@@ -151,7 +108,7 @@ const SignUpForm = () => {
               htmlFor="confirmPassword"
               className="text-sm font-medium text-foreground"
             >
-              Confirm Password
+              Confirm New Password
             </Label>
             <div className="relative group">
               <Lock className="w-4 h-4 sm:w-5 sm:h-5 absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40 group-focus-within:text-cyan-400 transition-colors" />
@@ -179,32 +136,22 @@ const SignUpForm = () => {
             )}
           </div>
 
-          <Button type="submit" className="w-full" size="lg" disabled={signUpMutation.isPending}>
-            {signUpMutation.isPending ? (
+          <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+            {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Creating Account...
+                Resetting Password...
               </>
             ) : (
               <>
-                Create Account <ArrowRight className="w-4 h-4" />
+                Reset Password <ArrowRight className="w-4 h-4" />
               </>
             )}
           </Button>
         </form>
-
-        <p className="text-center text-xs sm:text-sm text-foreground/60">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-cyan-400 hover:text-cyan-300 font-medium underline underline-offset-2 transition"
-          >
-            Sign in
-          </Link>
-        </p>
       </div>
     </div>
   );
 };
 
-export default SignUpForm;
+export default ResetPasswordForm;

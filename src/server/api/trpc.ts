@@ -1,8 +1,11 @@
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import { ZodError } from 'zod';
 import superjson from 'superjson';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/supabase';
 
-interface Context {
+export interface Context {
+  supabase: SupabaseClient<Database>;
   auth: { id: string; role: string } | null;
 }
 
@@ -25,22 +28,24 @@ export const publicProcedure = t.procedure;
 
 const isAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.auth) {
-    throw new Error('Unauthorized');
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not authenticated' });
   }
   return next({
     ctx: {
       auth: ctx.auth,
+      supabase: ctx.supabase,
     },
   });
 });
 
 const isAdmin = t.middleware(({ ctx, next }) => {
   if (!ctx.auth || ctx.auth.role !== 'admin') {
-    throw new Error('Forbidden');
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' });
   }
   return next({
     ctx: {
       auth: ctx.auth,
+      supabase: ctx.supabase,
     },
   });
 });

@@ -3,10 +3,46 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Mail, Send } from "lucide-react";
+import { ArrowLeft, Mail, Send, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { trpc } from "@/lib/trpc/client";
+import { toast } from "sonner";
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordForm = () => {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const resetPasswordMutation = trpc.auth.resetPassword.useMutation({
+    onSuccess: (_, variables) => {
+      toast.success("Reset code sent! Check your email.");
+      router.push(`/verify-otp?email=${encodeURIComponent(variables.email)}&type=reset`);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const onSubmit = (data: ForgotPasswordFormData) => {
+    resetPasswordMutation.mutate(data);
+  };
+
   return (
     <div className="w-full max-w-xl lg:max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
       <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-xl p-8 sm:p-10 lg:p-12 space-y-6 sm:space-y-8">
@@ -19,7 +55,7 @@ const ForgotPasswordForm = () => {
           </p>
         </div>
 
-        <form className="space-y-4 sm:space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
           <div className="space-y-2">
             <Label
               htmlFor="email"
@@ -34,19 +70,32 @@ const ForgotPasswordForm = () => {
                 type="email"
                 placeholder="you@example.com"
                 className="pl-10 sm:pl-11 h-11 sm:h-12 bg-secondary/30 border-border/50 text-foreground placeholder:text-foreground/40 focus:border-cyan-400/50 focus:ring-cyan-400/20 transition-all"
-                required
+                {...register("email")}
               />
             </div>
+            {errors.email && (
+              <p className="text-xs text-red-500">{errors.email.message}</p>
+            )}
             <p className="text-xs text-foreground/50">
-              We&apos;ll send a password reset link to this email
+              We&apos;ll send a password reset code to this email
             </p>
           </div>
 
           <Button
             type="submit"
             className="w-full bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold h-11 sm:h-12 flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:shadow-cyan-500/30"
+            disabled={resetPasswordMutation.isPending}
           >
-            Send Reset Link <Send className="w-4 h-4" />
+            {resetPasswordMutation.isPending ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                Send Reset Code <Send className="w-4 h-4" />
+              </>
+            )}
           </Button>
         </form>
 

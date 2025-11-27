@@ -28,7 +28,9 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { useUserRole } from "@/hooks/useUserRole";
+import { useAuthStore } from "@/store/auth.store";
+import { trpc } from "@/lib/trpc/client";
+import { toast } from "sonner";
 
 interface AppSidebarProps {
   userRole?: "user" | "admin";
@@ -53,11 +55,21 @@ const adminNavItems = [
 export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { clearRole } = useUserRole();
+  const { clearUser } = useAuthStore();
+
+  const signOutMutation = trpc.auth.signOut.useMutation({
+    onSuccess: () => {
+      clearUser();
+      toast.success("Logged out successfully");
+      router.push("/");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   const handleLogout = () => {
-    clearRole();
-    router.push("/");
+    signOutMutation.mutate();
   };
 
   return (

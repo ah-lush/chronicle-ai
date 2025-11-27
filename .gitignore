@@ -32,6 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# supabase
+.supabase/
+**/supabase/.branches
+**/supabase/.temp
+**/supabase/functions/.vscode
 
 # vercel
 .vercel

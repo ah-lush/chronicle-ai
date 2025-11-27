@@ -1,8 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,16 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useUserRole, UserRole } from "@/hooks/useUserRole";
+import { useUserRole } from "@/hooks/useUserRole";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 interface DashboardHeaderProps {
   user?: {
@@ -58,19 +51,6 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
       <div className="flex-1" />
 
       <div className="flex items-center gap-4">
-        <Select
-          value={role}
-          onValueChange={(value) => updateRole(value as UserRole)}
-        >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Select role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="user">User</SelectItem>
-            <SelectItem value="admin">Admin</SelectItem>
-          </SelectContent>
-        </Select>
-
         <Button
           variant="ghost"
           size="icon"
