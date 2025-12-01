@@ -4,6 +4,7 @@ import { articleRouter } from './routers/article';
 import { userRouter } from './routers/user';
 import { searchRouter } from './routers/search';
 import { adminRouter } from './routers/admin';
+import { uploadRouter } from './routers/upload';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   search: searchRouter,
   admin: adminRouter,
+  upload: uploadRouter,
   health: publicProcedure.query(() => ({ ok: true })),
 });
 

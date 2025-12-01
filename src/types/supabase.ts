@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      articles: {
+        Row: {
+          article_images: string[] | null
+          category: string
+          content: string
+          cover_image: string | null
+          created_at: string
+          id: string
+          published_at: string | null
+          status: Database["public"]["Enums"]["article_status"]
+          summary: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          article_images?: string[] | null
+          category: string
+          content: string
+          cover_image?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          status?: Database["public"]["Enums"]["article_status"]
+          summary: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          article_images?: string[] | null
+          category?: string
+          content?: string
+          cover_image?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          status?: Database["public"]["Enums"]["article_status"]
+          summary?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -49,10 +105,65 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_articles: {
+        Args: {
+          p_category?: string
+          p_page?: number
+          p_page_size?: number
+          p_search?: string
+          p_sort_by?: string
+          p_sort_order?: string
+          p_status?: Database["public"]["Enums"]["article_status"]
+          p_user_id?: string
+        }
+        Returns: {
+          article_images: string[]
+          category: string
+          content: string
+          cover_image: string
+          created_at: string
+          id: string
+          published_at: string
+          status: Database["public"]["Enums"]["article_status"]
+          summary: string
+          tags: string[]
+          title: string
+          total_count: number
+          updated_at: string
+          user_id: string
+          user_info: Json
+        }[]
+      }
+      get_public_articles: {
+        Args: {
+          p_category?: string
+          p_page?: number
+          p_page_size?: number
+          p_search?: string
+          p_sort_by?: string
+          p_sort_order?: string
+          p_tags?: string[]
+        }
+        Returns: {
+          article_images: string[]
+          category: string
+          content: string
+          cover_image: string
+          created_at: string
+          id: string
+          published_at: string
+          summary: string
+          tags: string[]
+          title: string
+          total_count: number
+          user_id: string
+          user_info: Json
+        }[]
+      }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      article_status: "DRAFT" | "PUBLISHED" | "ARCHIVED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -179,6 +290,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      article_status: ["DRAFT", "PUBLISHED", "ARCHIVED"],
+    },
   },
 } as const
