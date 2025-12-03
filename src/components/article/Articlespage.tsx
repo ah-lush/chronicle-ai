@@ -45,13 +45,26 @@ const ArticlesPage = () => {
     [page, debouncedSearch, category]
   );
 
+  const [allArticles, setAllArticles] = useState<any[]>([]);
+
   const { data, isLoading, isFetching } =
     trpc.article.getPublicArticles.useQuery(queryParams);
 
-  const allArticles = useMemo(() => {
-    if (!data?.articles) return [];
-    return data.articles;
-  }, [data]);
+  useEffect(() => {
+    if (data?.articles) {
+      if (page === 1) {
+        setAllArticles(data.articles);
+      } else {
+        setAllArticles((prev) => {
+          const existingIds = new Set(prev.map((a) => a.id));
+          const newArticles = data.articles.filter(
+            (a) => !existingIds.has(a.id)
+          );
+          return [...prev, ...newArticles];
+        });
+      }
+    }
+  }, [data, page]);
 
   const hasNextPage = data
     ? data.pagination.page < data.pagination.totalPages

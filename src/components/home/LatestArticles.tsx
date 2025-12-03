@@ -1,23 +1,10 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { ArticleCard } from '@/components/common/ArticleCard';
-import { trpc } from '@/lib/trpc/client';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import { Button } from '@/components/ui/button';
-import { containerVariants, itemVariants } from '@/lib/animation-variants';
+import { Button } from "@/components/ui/button";
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
+import { motion } from "framer-motion";
 
 export function LatestArticles() {
-  const { data: response, isLoading } = trpc.article.getAll.useQuery({ limit: 9 });
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
   return (
     <motion.div
       variants={containerVariants}
@@ -38,11 +25,9 @@ export function LatestArticles() {
         animate="animate"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
       >
-        {response?.items.map((article) => (
-          <motion.div key={article.id} variants={itemVariants}>
-            <ArticleCard article={article} />
-          </motion.div>
-        ))}
+        <motion.div variants={itemVariants}>
+          <p>coming soon</p>
+        </motion.div>
       </motion.div>
 
       <motion.div variants={itemVariants} className="text-center">

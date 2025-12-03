@@ -1,9 +1,8 @@
-'use client';
+"use client";
 
-import { Article } from '@/types';
-import { ArticleCard } from '@/components/common/ArticleCard';
-import { motion } from 'framer-motion';
-import { containerVariants, itemVariants } from '@/lib/animation-variants';
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
+import { Article } from "@/types";
+import { motion } from "framer-motion";
 
 interface RelatedArticlesProps {
   articles: Article[];
@@ -31,11 +30,7 @@ export function RelatedArticles({ articles }: RelatedArticlesProps) {
         animate="animate"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {articles.map((article) => (
-          <motion.div key={article.id} variants={itemVariants}>
-            <ArticleCard article={article} />
-          </motion.div>
-        ))}
+        <p>coming soon</p>
       </motion.div>
     </motion.section>
   );

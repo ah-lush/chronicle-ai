@@ -14,6 +14,71 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_jobs: {
+        Row: {
+          article_id: string | null
+          completed_at: string | null
+          created_at: string
+          current_step: string | null
+          error_message: string | null
+          id: string
+          inngest_run_id: string | null
+          progress: number | null
+          query: string
+          research_data: Json | null
+          retry_count: number | null
+          search_queries: string[] | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["agent_job_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          article_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string | null
+          error_message?: string | null
+          id?: string
+          inngest_run_id?: string | null
+          progress?: number | null
+          query: string
+          research_data?: Json | null
+          retry_count?: number | null
+          search_queries?: string[] | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["agent_job_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          article_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string | null
+          error_message?: string | null
+          id?: string
+          inngest_run_id?: string | null
+          progress?: number | null
+          query?: string
+          research_data?: Json | null
+          retry_count?: number | null
+          search_queries?: string[] | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["agent_job_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_jobs_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       articles: {
         Row: {
           article_images: string[] | null
@@ -182,6 +247,15 @@ export type Database = {
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
+      agent_job_status:
+        | "QUEUED"
+        | "ANALYZING"
+        | "SEARCHING"
+        | "RESEARCHING"
+        | "WRITING"
+        | "REVIEWING"
+        | "COMPLETED"
+        | "FAILED"
       article_status: "DRAFT" | "PUBLISHED" | "ARCHIVED"
     }
     CompositeTypes: {
@@ -310,6 +384,16 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      agent_job_status: [
+        "QUEUED",
+        "ANALYZING",
+        "SEARCHING",
+        "RESEARCHING",
+        "WRITING",
+        "REVIEWING",
+        "COMPLETED",
+        "FAILED",
+      ],
       article_status: ["DRAFT", "PUBLISHED", "ARCHIVED"],
     },
   },

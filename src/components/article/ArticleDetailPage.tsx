@@ -3,12 +3,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
+import { markdownToHtml } from "@/lib/markdown";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ArticleDetailSkeleton } from "./ArticleDetailSkeleton";
 import { ArticleImageModal } from "./ArticleImageModal";
@@ -26,6 +27,11 @@ export function ArticleDetailPage({ articleId }: ArticleDetailPageProps) {
   const { data: article, isLoading } = trpc.article.getById.useQuery({
     id: articleId,
   });
+
+  // Convert markdown content to HTML - must be before conditional returns
+  const htmlContent = useMemo(() => {
+    return article ? markdownToHtml(article.content) : "";
+  }, [article]);
 
   if (isLoading) {
     return <ArticleDetailSkeleton />;
@@ -185,7 +191,7 @@ export function ArticleDetailPage({ articleId }: ArticleDetailPageProps) {
         >
           <div
             className="leading-relaxed text-foreground"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </motion.div>
 

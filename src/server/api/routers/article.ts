@@ -7,6 +7,7 @@ import {
   getPublicArticlesSchema,
   publishArticleSchema,
   updateArticleSchema,
+  updateArticleStatusSchema,
 } from "@/types/article";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
@@ -38,6 +39,12 @@ export const articleRouter = createTRPCRouter({
     .input(updateArticleSchema)
     .mutation(({ ctx, input }) => {
       return articleService.update(ctx, input);
+    }),
+
+  updateStatus: protectedProcedure
+    .input(updateArticleStatusSchema)
+    .mutation(({ ctx, input }) => {
+      return articleService.updateStatus(ctx, input.id, input.status);
     }),
 
   publish: protectedProcedure

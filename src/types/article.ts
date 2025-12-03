@@ -74,6 +74,11 @@ export const updateArticleSchema = createArticleSchema.partial().extend({
   id: z.string().uuid("Invalid article ID"),
 });
 
+export const updateArticleStatusSchema = z.object({
+  id: z.string().uuid("Invalid article ID"),
+  status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]),
+});
+
 export const publishArticleSchema = z.object({
   id: z.string().uuid("Invalid article ID"),
 });
@@ -113,6 +118,7 @@ export const deleteArticleSchema = z.object({
 
 export type CreateArticleInput = z.infer<typeof createArticleSchema>;
 export type UpdateArticleInput = z.infer<typeof updateArticleSchema>;
+export type UpdateArticleStatusInput = z.infer<typeof updateArticleStatusSchema>;
 export type PublishArticleInput = z.infer<typeof publishArticleSchema>;
 export type GetArticlesInput = z.infer<typeof getArticlesSchema>;
 export type GetPublicArticlesInput = z.infer<typeof getPublicArticlesSchema>;

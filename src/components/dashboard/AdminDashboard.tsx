@@ -1,11 +1,11 @@
 "use client";
 
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { StatsCard } from "@/components/dashboard/StatsCard";
-import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import { trpc } from "@/lib/trpc/client";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import { FileText, CheckCircle, Clock, Eye } from "lucide-react";
+import { motion } from "framer-motion";
+import { CheckCircle, Clock, Eye, FileText } from "lucide-react";
 
 const AdminDashboard = () => {
   const { data: stats, isLoading } = trpc.admin.getStats.useQuery();
@@ -76,20 +76,6 @@ const AdminDashboard = () => {
         variants={itemVariants}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
-          <h3 className="font-bold mb-4">Content Types</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span>AI Generated</span>
-              <span className="font-bold">{stats?.aiGeneratedCount || 0}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>User Posted</span>
-              <span className="font-bold">{stats?.userPostedCount || 0}</span>
-            </div>
-          </div>
-        </div>
-
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
           <h3 className="font-bold mb-4">Quick Actions</h3>
           <div className="space-y-2">

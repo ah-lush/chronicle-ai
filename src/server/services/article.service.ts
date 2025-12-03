@@ -250,17 +250,21 @@ export const articleService = {
     return data;
   },
 
-  async publish(ctx: Context, id: string) {
+  async updateStatus(
+    ctx: Context,
+    id: string,
+    status: "DRAFT" | "PUBLISHED" | "ARCHIVED"
+  ) {
     if (!ctx.auth) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "You must be logged in to publish an article",
+        message: "You must be logged in to update article status",
       });
     }
 
     const { data: existing, error: fetchError } = await ctx.supabase
       .from("articles")
-      .select("user_id")
+      .select("user_id, status")
       .eq("id", id)
       .single();
 
@@ -274,16 +278,24 @@ export const articleService = {
     if (existing.user_id !== ctx.auth.id) {
       throw new TRPCError({
         code: "FORBIDDEN",
-        message: "You don't have permission to publish this article",
+        message: "You don't have permission to update this article",
       });
+    }
+
+    const updateData: {
+      status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+      published_at?: string;
+    } = {
+      status,
+    };
+
+    if (status === "PUBLISHED" && existing.status !== "PUBLISHED") {
+      updateData.published_at = new Date().toISOString();
     }
 
     const { data, error } = await ctx.supabase
       .from("articles")
-      .update({
-        status: "PUBLISHED",
-        published_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq("id", id)
       .select()
       .single();
@@ -296,6 +308,10 @@ export const articleService = {
     }
 
     return data;
+  },
+
+  async publish(ctx: Context, id: string) {
+    return this.updateStatus(ctx, id, "PUBLISHED");
   },
 
   async delete(ctx: Context, id: string) {

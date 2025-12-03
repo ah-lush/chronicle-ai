@@ -1,6 +1,5 @@
 "use client";
 
-import { ArticleCard } from "@/components/common/ArticleCard";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import { motion } from "framer-motion";
 
@@ -51,11 +50,7 @@ export default function BookmarksPage() {
         animate="animate"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {mockBookmarks.map((article) => (
-          <motion.div key={article.id} variants={itemVariants}>
-            <ArticleCard article={article} />
-          </motion.div>
-        ))}
+        <p>coming soon</p>
       </motion.div>
     </motion.div>
   );

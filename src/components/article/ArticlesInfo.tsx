@@ -17,9 +17,10 @@ import { CATEGORIES } from "@/lib/constants";
 import { trpc } from "@/lib/trpc/client";
 import type { ArticleStatus } from "@/types/article";
 import { motion } from "framer-motion";
-import { Edit, Eye, Loader2, Search, Trash2 } from "lucide-react";
+import { Edit, Eye, Loader2, Search, Trash2, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { ChangeStatusModal } from "./ChangeStatusModal";
 
 const ArticlesInfo = () => {
   const { toast } = useToast();
@@ -28,6 +29,12 @@ const ArticlesInfo = () => {
   const [category, setCategory] = useState<string | undefined>();
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<{
+    id: string;
+    title: string;
+    status: ArticleStatus;
+  } | null>(null);
 
   const { data, isLoading, refetch } = trpc.article.getArticles.useQuery({
     page,
@@ -64,6 +71,16 @@ const ArticlesInfo = () => {
     ) {
       deleteMutation.mutate({ id });
     }
+  };
+
+  const handleStatusChange = (id: string, title: string, status: ArticleStatus) => {
+    setSelectedArticle({ id, title, status });
+    setStatusModalOpen(true);
+  };
+
+  const handleStatusModalClose = () => {
+    setStatusModalOpen(false);
+    setSelectedArticle(null);
   };
 
   const handleTabChange = (value: string) => {
@@ -252,6 +269,20 @@ const ArticlesInfo = () => {
                       </div>
                     </div>
                     <div className="flex gap-2 ml-4">
+                      <Button
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() =>
+                          handleStatusChange(
+                            article.id,
+                            article.title,
+                            article.status
+                          )
+                        }
+                        title="Change status"
+                      >
+                        <RefreshCw className="w-4 h-4" />
+                      </Button>
                       <Link href={`/dashboard/edit/${article.id}`}>
                         <Button
                           variant="ghost"
@@ -344,6 +375,17 @@ const ArticlesInfo = () => {
           </div>
         )}
       </motion.div>
+
+      {selectedArticle && (
+        <ChangeStatusModal
+          isOpen={statusModalOpen}
+          onClose={handleStatusModalClose}
+          articleId={selectedArticle.id}
+          articleTitle={selectedArticle.title}
+          currentStatus={selectedArticle.status}
+          onSuccess={refetch}
+        />
+      )}
     </motion.div>
   );
 };
