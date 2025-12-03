@@ -1,5 +1,6 @@
 import type { Context } from "@/server/api/trpc";
 import type {
+  ArticleDetail,
   ArticleWithUserInfo,
   CreateArticleInput,
   GetArticlesInput,
@@ -60,16 +61,8 @@ export const articleService = {
       });
     }
 
-    const {
-      page,
-      limit,
-      status,
-      category,
-      search,
-      userId,
-      sortBy,
-      sortOrder,
-    } = input;
+    const { page, limit, status, category, search, userId, sortBy, sortOrder } =
+      input;
 
     const { data, error } = await ctx.supabase.rpc("get_articles", {
       p_page: page,
@@ -174,21 +167,24 @@ export const articleService = {
     };
   },
 
-  async getById(ctx: Context, id: string) {
-    const { data, error } = await ctx.supabase
-      .from("articles")
-      .select("*")
-      .eq("id", id)
-      .single();
+  async getById(ctx: Context, id: string): Promise<ArticleDetail> {
+    const { data, error } = await ctx.supabase.rpc("get_article_by_id", {
+      p_article_id: id,
+    });
 
-    if (error) {
+    if (error || !data || data.length === 0) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Article not found",
       });
     }
 
-    return data;
+    const article = data[0];
+
+    return {
+      ...article,
+      user_info: article.user_info as UserInfo,
+    };
   },
 
   async update(ctx: Context, input: UpdateArticleInput) {

@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Menu, X, Zap, Search, User, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Menu, Moon, Sun, User, X, Zap } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,28 +36,14 @@ export function Header() {
               Home
             </Link>
             <Link
-              href="/search"
+              href="/articles"
               className="text-sm font-medium text-foreground/70 hover:text-cyan-400 transition"
             >
               Explore
             </Link>
-            <Link
-              href="/category/technology"
-              className="text-sm font-medium text-foreground/70 hover:text-cyan-400 transition"
-            >
-              Technology
-            </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-2.5 text-foreground/50" />
-              <Input
-                placeholder="Search articles..."
-                className="pl-10 w-48 bg-secondary/50 border-border/50 text-foreground placeholder:text-foreground/40"
-              />
-            </div>
-
             {isMounted && (
               <Button
                 variant="ghost"
@@ -99,16 +84,10 @@ export function Header() {
               Home
             </Link>
             <Link
-              href="/search"
+              href="/articles"
               className="block py-2 text-sm font-medium text-foreground/70 hover:text-cyan-400"
             >
               Explore
-            </Link>
-            <Link
-              href="/category/technology"
-              className="block py-2 text-sm font-medium text-foreground/70 hover:text-cyan-400"
-            >
-              Technology
             </Link>
           </nav>
         )}

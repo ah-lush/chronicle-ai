@@ -105,6 +105,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_article_by_id: {
+        Args: { p_article_id: string }
+        Returns: {
+          article_images: string[]
+          category: string
+          content: string
+          cover_image: string
+          created_at: string
+          id: string
+          published_at: string
+          status: Database["public"]["Enums"]["article_status"]
+          summary: string
+          tags: string[]
+          title: string
+          updated_at: string
+          user_id: string
+          user_info: Json
+        }[]
+      }
       get_articles: {
         Args: {
           p_category?: string

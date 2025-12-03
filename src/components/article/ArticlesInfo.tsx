@@ -21,7 +21,7 @@ import { Edit, Eye, Loader2, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-const ArticlesDetailPage = () => {
+const ArticlesInfo = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<ArticleStatus | "ALL">("ALL");
   const [search, setSearch] = useState("");
@@ -348,4 +348,4 @@ const ArticlesDetailPage = () => {
   );
 };
 
-export default ArticlesDetailPage;
+export default ArticlesInfo;

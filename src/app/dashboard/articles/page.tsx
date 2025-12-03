@@ -1,5 +1,5 @@
-import ArticlesDetailPage from "@/components/article/ArticlesDetailPage";
+import ArticlesInfo from "@/components/article/ArticlesInfo";
 
 export default function ArticlesPage() {
-  return <ArticlesDetailPage />;
+  return <ArticlesInfo />;
 }

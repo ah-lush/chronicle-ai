@@ -32,6 +32,10 @@ export type PublicArticleWithUserInfo = Omit<
   user_info: UserInfo;
 };
 
+export type ArticleDetail = Article & {
+  user_info: UserInfo;
+};
+
 export const createArticleSchema = z.object({
   title: z
     .string()
